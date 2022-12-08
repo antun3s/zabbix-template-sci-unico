@@ -1,0 +1,130 @@
+zabbix_export:
+  version: '6.0'
+  date: '2022-12-08T00:27:10Z'
+  groups:
+    -
+      uuid: 7df96b18c230490a9a0a9e2307226338
+      name: Templates
+  templates:
+    -
+      uuid: 1a494ff3af84423180d7801edf9f1a5b
+      template: 'Template Unico SCI'
+      name: 'Template Unico SCI'
+      description: |
+        Template para monitoramento do SCI ÚNICO SISTEMA CONTÁBIL
+        
+        Informações em: http://github.com/antun3s/zabbix-template-sci-unico
+      groups:
+        -
+          name: Templates
+      items:
+        -
+          uuid: bca056a2a5cc4eba862ff7fd271c3c10
+          name: 'SCI Conexões'
+          type: DEPENDENT
+          key: sci.conexoes
+          delay: '0'
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.DATAPACKET.ROWDATA.ROW.bdNRCONEXOESATIVAS
+          master_item:
+            key: 'vfs.file.contents["D:\SCI\servidor\infos.xml",]'
+        -
+          uuid: cfe514d760404a38ac401e3c37f998c1
+          name: 'SCI Conexões em standby'
+          type: DEPENDENT
+          key: sci.conexoesstandby
+          delay: '0'
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.DATAPACKET.ROWDATA.ROW.bdNRSTANDBY
+          master_item:
+            key: 'vfs.file.contents["D:\SCI\servidor\infos.xml",]'
+        -
+          uuid: 8f3d219012bd4d6b84c646ddff2e270c
+          name: 'SCI Status'
+          type: DEPENDENT
+          key: sci.status
+          delay: '0'
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.DATAPACKET.ROWDATA.ROW.RowState
+          master_item:
+            key: 'vfs.file.contents["D:\SCI\servidor\infos.xml",]'
+          triggers:
+            -
+              uuid: 7bdf0ae1eb284f31bcfe244a38856650
+              expression: 'last(/Template Unico SCI/sci.status)<>4'
+              name: 'Banco de dados  não está em execução'
+              priority: HIGH
+              manual_close: 'YES'
+        -
+          uuid: 806062b1fd214b889972f37081285baa
+          name: 'SCI Uptime'
+          type: DEPENDENT
+          key: sci.uptime
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.DATAPACKET.ROWDATA.ROW.bdSTARTUP
+          master_item:
+            key: 'vfs.file.contents["D:\SCI\servidor\infos.xml",]'
+        -
+          uuid: 63d0983de2bf40f899c3bfe52c82dfaf
+          name: 'SCI info'
+          key: 'vfs.file.contents["D:\SCI\servidor\infos.xml",]'
+          delay: 5m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: XML_TO_JSON
+              parameters:
+                - ''
+            -
+              type: STR_REPLACE
+              parameters:
+                - '@'
+                - ''
+        -
+          uuid: 861618e33a734ed1a3ee9a48f4326798
+          name: 'Ultima atualização do infos.xml'
+          key: 'vfs.file.time["D:\SCI\servidor\infos.xml"]'
+          delay: 5m
+          units: unixtime
+          triggers:
+            -
+              uuid: 11a4fe1f1ec24875b9bcbcf16269d69d
+              expression: 'change(/Template Unico SCI/vfs.file.time["D:\SCI\servidor\infos.xml"])=0'
+              name: 'Sem dados recentes do SCI Unico'
+              priority: AVERAGE
+              manual_close: 'YES'
+  graphs:
+    -
+      uuid: c449ddbfd3ef4128ba990aa91a32910f
+      name: 'Histórico de conexões ativas'
+      graph_items:
+        -
+          color: 2E7D32
+          calc_fnc: ALL
+          item:
+            host: 'Template Unico SCI'
+            key: sci.conexoes
+        -
+          sortorder: '1'
+          color: FBC02D
+          calc_fnc: ALL
+          item:
+            host: 'Template Unico SCI'
+            key: sci.conexoesstandby
