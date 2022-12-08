@@ -18,9 +18,12 @@ O gráfico disponível exibe o número de conexões ativas com o banco de dados.
 
 # Como utilizar
 Baixe o arquivo `zabbix-template-sci-unico.yaml`
+
 Edite as menções de `D:\SCI\servidor\infos.xml` e insira o caminho do arquivo em seu servidor.
+
 Faça o upload do Template em seu Zabbix e associe-o no host que roda o "SCI Úníco Sistema Contábil"
 
 # Informação adicional
 Testado com o Zabbix na versão 6.0 LTS.
+
 Esse não é um template oficial da empresa que criou o sistema.
