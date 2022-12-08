@@ -27,3 +27,6 @@ Faça o upload do Template em seu Zabbix e associe-o no host que roda o "SCI Ún
 Testado com o Zabbix na versão 6.0 LTS.
 
 Esse não é um template oficial da empresa que criou o sistema.
+
+Post com explicação da motivação e detalhe do funcionamento:
+https://brunoantuness.wordpress.com/2022/12/08/template-de-zabbix-para-monitorar-o-banco-do-sci-unico-sistema-contabil/
