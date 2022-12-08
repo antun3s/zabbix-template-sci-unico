@@ -1,5 +1,5 @@
 # Recursos do template
-Esse template monitora as informações do sistema "SCI Úníco Sistema Contábil"
+Esse template do zabbix monitora as informações do sistema "SCI Único Sistema Contábil"
 
 ## Itens monitorados:
 No Zabbix é possível monitorar:
